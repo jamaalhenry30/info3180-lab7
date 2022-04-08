@@ -27,17 +27,17 @@ def index():
 @app.route("/api/upload", methods=["POST","GET"])
 def upload():
     form = UploadForm()
-    if request.method == "POST": 
-        if form.validate_on_submit(): 
-            description = form.description.data
-            photo = form.photo.data
-            filename = secure_filename(photo.filename)
-            message = 'File Upload Successful'
-            photo.save(os.path.join(app.config['UPLOAD_FOLDER'],filename))
-            #flash('Image uploaded successfully.','success')
-            return jsonify(message=message,filename=filename,description=description)
+    if request.method == "POST" and form.validate_on_submit(): 
+        #if form.validate_on_submit(): 
+        description = form.description.data
+        photo = form.photo.data
+        filename = secure_filename(photo.filename)
+        message = 'File Upload Successful'
+        photo.save(os.path.join(app.config['UPLOAD_FOLDER'],filename))
+        #flash('Image uploaded successfully.','success')
+        return jsonify(message=message,filename=filename,description=description)
         #flash('Image not uploaded successfully.', 'danger')
-        return jsonify(errors = form_errors(form))
+    return jsonify(errors = form_errors(form))
     
 
 @app.route('/api/csrf-token', methods=['GET']) 
